@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: downlaoding apache tar file from web
+    get_url:
+      url: http://apache.osuosl.org/httpd/httpd-2.4.38.tar.gz
+      dest: /home/ownuser
+  - name: archiving the tar file
+    unarchive:
+      src: /home/ownuser/httpd-2.4.38.tar.gz
+      dest: /home/ownuser/playbooks
+      remote_src: yes
+  - name: installing apache      
+    yum:
+      name: httpd
+      state: present
+
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started  

@@ -1,0 +1,8 @@
+---
+- hosts: all 
+  tasks:
+  - name: pinging all servers
+    ping:
+  - name: who is executing
+    command: who am i
+      
