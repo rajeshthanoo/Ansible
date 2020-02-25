@@ -1,0 +1,6 @@
+---
+- name: create a file with hostname and OS
+  template:
+    src: info.j2
+    dest: /home/ansible/info
+

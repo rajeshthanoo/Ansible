@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  vars:
+    description: this is test
+  tasks:
+  - include: main.yaml 

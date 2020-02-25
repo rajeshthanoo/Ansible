@@ -1,0 +1,33 @@
+---
+- hosts: RedHat  
+  become: yes
+  tasks:
+  - name: checking host vars
+    debug:
+      msg: 
+      -  "{{ log_folder }}"
+      -  "{{ ansible_distribution }}"
+    tags:
+      - debug
+  - name: installing "{{ item }}"
+    yum:
+      name: "{{ item }}"
+      state: absent
+    with_items: 
+    - git
+    - tree
+    tags:
+      - item 
+  - name: print current location
+    command: ls /home/ansible
+    register: cat_path
+    ignore_errors: yes
+  - name: display contents  
+    debug:
+      msg: "{{ cat_path.stdout }}"
+    when: cat_path.stderr == "" 
+     
+  - name: display error
+    debug:
+      msg: "{{ cat_path.stderr }}"  
+    when: not cat_path.stderr == ""

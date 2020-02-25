@@ -1,0 +1,41 @@
+---
+- hosts: RedHat   
+  become: yes
+  tasks:
+  - name: pinging the servers
+    ping:
+  - name: Installing Apache on Redhat
+    yum:
+      name: "{{ http_package }}" 
+      state: present 
+    when: ansible_distribution == "RedHat"
+    tags:
+      - apache install
+  - name: Installing Apache on Ubuntu
+    apt:
+      name: "{{ apache_package }}"
+      state: present
+    when: ansible_distribution == "Ubuntu"
+    
+  - name: Enabling and starting the httpd on RedHat
+    service:
+      name: "{{ http_package }}" 
+      enabled: yes 
+      state: started
+    when: ansible_distribution == "RedHat"
+
+  - name: starting  apche on Ubuntu
+    service: 
+      name: "{{ apache_package }}" 
+      state: started
+    when: ansible_distribution == "Ubuntu" 
+   
+  - name: Giving OS Information
+    debug:
+      msg: "{{ ansible_distribution }}"
+  
+  - name: Giving Free memory
+    debug:
+      msg: "free memory is {{ ansible_memory_mb.real.free }}"
+    tags:
+      - debug
